@@ -116,10 +116,42 @@ const getDailyOrders = async (req, res) => {
   }
 };
 
+
+// Get Weekly Orders
+const getWeeklyOrders = async (req, res) => {
+  try {
+    const today = new Date();
+
+    // Date 7 days ago
+    const lastWeek = new Date();
+    lastWeek.setDate(today.getDate() - 7);
+
+    const orders = await Order.find({
+      createdAt: {
+        $gte: lastWeek,
+        $lte: today,
+      },
+    });
+
+    res.status(200).json({
+      success: true,
+      totalOrders: orders.length,
+      data: orders,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
 module.exports = {
   getPendingOrders,
   getProcessingOrders,
   getDeliveredOrders,
   getAllOrders,
   getDailyOrders,
+  getWeeklyOrders,
 };
