@@ -42,7 +42,31 @@ const getProcessingOrders = async (req, res) => {
   }
 };
 
+
+// Get Delivered Orders
+const getDeliveredOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({
+      orderStatus: "Delivered",
+    });
+
+    res.status(200).json({
+      success: true,
+      totalOrders: orders.length,
+      data: orders,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
+
 module.exports = {
   getPendingOrders,
-  getProcessingOrders
+  getProcessingOrders,
+  getDeliveredOrders,
 };
