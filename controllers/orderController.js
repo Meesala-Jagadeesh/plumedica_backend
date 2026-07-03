@@ -210,6 +210,47 @@ const getYearlyOrders = async (req, res) => {
   }
 };
 
+
+// Get Orders By Selected Date
+const getOrdersBySelectedDate = async (req, res) => {
+  try {
+    const { date } = req.body;
+
+    if (!date) {
+      return res.status(400).json({
+        success: false,
+        message: "Date is required",
+      });
+    }
+
+    // Start of selected date
+    const startDate = new Date(date);
+    startDate.setHours(0, 0, 0, 0);
+
+    // End of selected date
+    const endDate = new Date(startDate);
+    endDate.setDate(endDate.getDate() + 1);
+
+    const orders = await Order.find({
+      createdAt: {
+        $gte: startDate,
+        $lt: endDate,
+      },
+    });
+
+    res.status(200).json({
+      success: true,
+      totalOrders: orders.length,
+      data: orders,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   getPendingOrders,
   getProcessingOrders,
@@ -219,4 +260,5 @@ module.exports = {
   getWeeklyOrders,
   getMonthlyOrders,
   getYearlyOrders,
+  getOrdersBySelectedDate,
 };
