@@ -178,6 +178,38 @@ const getMonthlyOrders = async (req, res) => {
   }
 };
 
+
+// Get Yearly Orders
+const getYearlyOrders = async (req, res) => {
+  try {
+    const today = new Date();
+
+    // First day of current year
+    const firstDay = new Date(today.getFullYear(), 0, 1);
+
+    // First day of next year
+    const nextYear = new Date(today.getFullYear() + 1, 0, 1);
+
+    const orders = await Order.find({
+      createdAt: {
+        $gte: firstDay,
+        $lt: nextYear,
+      },
+    });
+
+    res.status(200).json({
+      success: true,
+      totalOrders: orders.length,
+      data: orders,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   getPendingOrders,
   getProcessingOrders,
@@ -186,4 +218,5 @@ module.exports = {
   getDailyOrders,
   getWeeklyOrders,
   getMonthlyOrders,
+  getYearlyOrders,
 };
