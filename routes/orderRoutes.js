@@ -9,6 +9,7 @@ const {
   getAllOrders,
   getDailyOrders,
   getWeeklyOrders,
+  getMonthlyOrders,
 } = require("../controllers/orderController");
 
 router.get("/pending", getPendingOrders);
@@ -22,5 +23,7 @@ router.get("/all", getAllOrders);
 router.get("/daily", getDailyOrders);
 
 router.get("/weekly", getWeeklyOrders);
+
+router.get("/monthly", getMonthlyOrders);
 
 module.exports = router;

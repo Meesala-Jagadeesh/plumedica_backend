@@ -147,6 +147,37 @@ const getWeeklyOrders = async (req, res) => {
 };
 
 
+// Get Monthly Orders
+const getMonthlyOrders = async (req, res) => {
+  try {
+    const today = new Date();
+
+    // First day of current month
+    const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+
+    // First day of next month
+    const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+
+    const orders = await Order.find({
+      createdAt: {
+        $gte: firstDay,
+        $lt: lastDay,
+      },
+    });
+
+    res.status(200).json({
+      success: true,
+      totalOrders: orders.length,
+      data: orders,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   getPendingOrders,
   getProcessingOrders,
@@ -154,4 +185,5 @@ module.exports = {
   getAllOrders,
   getDailyOrders,
   getWeeklyOrders,
+  getMonthlyOrders,
 };
