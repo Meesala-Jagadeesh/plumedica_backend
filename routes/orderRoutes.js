@@ -7,6 +7,7 @@ const {
   getProcessingOrders,
   getDeliveredOrders,
   getAllOrders,
+  getDailyOrders,
 } = require("../controllers/orderController");
 
 router.get("/pending", getPendingOrders);
@@ -16,5 +17,7 @@ router.get("/processing", getProcessingOrders);
 router.get("/delivered", getDeliveredOrders);
 
 router.get("/all", getAllOrders);
+
+router.get("/daily", getDailyOrders);
 
 module.exports = router;

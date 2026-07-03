@@ -83,9 +83,43 @@ const getAllOrders = async (req, res) => {
 };
 
 
+
+// Get Daily Orders
+const getDailyOrders = async (req, res) => {
+  try {
+    // Today's date (00:00:00)
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // Tomorrow's date (00:00:00)
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    // Find today's orders
+    const orders = await Order.find({
+      createdAt: {
+        $gte: today,
+        $lt: tomorrow,
+      },
+    });
+
+    res.status(200).json({
+      success: true,
+      totalOrders: orders.length,
+      data: orders,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   getPendingOrders,
   getProcessingOrders,
   getDeliveredOrders,
   getAllOrders,
+  getDailyOrders,
 };
