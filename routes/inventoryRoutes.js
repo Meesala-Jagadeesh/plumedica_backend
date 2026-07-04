@@ -7,6 +7,7 @@ const {
     getAnalgesicMedicines,
     getRespiratoryMedicines,
     getSupplementMedicines,
+    getGIHealthMedicines,
 } = require("../controllers/inventoryController");
 
 // Get All Medicines
@@ -17,5 +18,7 @@ router.get("/category/Analgesic", getAnalgesicMedicines);
 router.get("/category/Respiratory", getRespiratoryMedicines);
 // Get Supplement Medicines
 router.get("/category/Supplement", getSupplementMedicines);
+
+router.get("/gi-health", getGIHealthMedicines);
 
 module.exports = router;
