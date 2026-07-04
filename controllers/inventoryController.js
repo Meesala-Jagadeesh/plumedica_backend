@@ -255,6 +255,33 @@ const getSoldStock = async (req, res) => {
     });
   }
 };
+
+
+// Get Medicine Expiry Details
+const getExpiryMedicines = async (req, res) => {
+  try {
+    const medicines = await Inventory.find(
+      {},
+      {
+        medicineName: 1,
+        expiryDate: 1,
+        remainingStock: 1,
+        totalStock: 1,
+      }
+    );
+
+    res.status(200).json({
+      success: true,
+      totalMedicines: medicines.length,
+      data: medicines,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 module.exports = {
     getAllInventory,
     getAnalgesicMedicines,
@@ -266,4 +293,5 @@ module.exports = {
     getMaxLimitMedicines,
     getRemainingStock,
     getSoldStock,
+    getExpiryMedicines,
 };
