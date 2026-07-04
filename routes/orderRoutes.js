@@ -12,6 +12,7 @@ const {
   getMonthlyOrders,
   getYearlyOrders,
   getOrdersBySelectedDate,
+  searchOrders,
 } = require("../controllers/orderController");
 
 router.get("/pending", getPendingOrders);
@@ -31,4 +32,7 @@ router.get("/monthly", getMonthlyOrders);
 router.get("/yearly", getYearlyOrders);
 
 router.post("/select-date", getOrdersBySelectedDate);
+
+router.get("/search", searchOrders);
+
 module.exports = router;

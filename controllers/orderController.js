@@ -251,6 +251,50 @@ const getOrdersBySelectedDate = async (req, res) => {
   }
 };
 
+
+// Search Orders
+const searchOrders = async (req, res) => {
+  try {
+    const { keyword } = req.query;
+
+    if (!keyword) {
+      return res.status(400).json({
+        success: false,
+        message: "Search keyword is required",
+      });
+    }
+
+    const orders = await Order.find({
+      $or: [
+        { orderId: { $regex: keyword, $options: "i" } },
+        { patientId: { $regex: keyword, $options: "i" } },
+        { patientName: { $regex: keyword, $options: "i" } },
+        {
+          medicines: {
+            $elemMatch: {
+              medicineName: {
+                $regex: keyword,
+                $options: "i",
+              },
+            },
+          },
+        },
+      ],
+    });
+
+    res.status(200).json({
+      success: true,
+      totalOrders: orders.length,
+      data: orders,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   getPendingOrders,
   getProcessingOrders,
@@ -261,4 +305,5 @@ module.exports = {
   getMonthlyOrders,
   getYearlyOrders,
   getOrdersBySelectedDate,
+  searchOrders,
 };
