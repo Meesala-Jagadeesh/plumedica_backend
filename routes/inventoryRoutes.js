@@ -6,6 +6,7 @@ const {
     getAllInventory,
     getAnalgesicMedicines,
     getRespiratoryMedicines,
+    getSupplementMedicines,
 } = require("../controllers/inventoryController");
 
 // Get All Medicines
@@ -14,5 +15,7 @@ router.get("/all", getAllInventory);
 router.get("/category/Analgesic", getAnalgesicMedicines);
 // Get Respiratory Medicines
 router.get("/category/Respiratory", getRespiratoryMedicines);
+// Get Supplement Medicines
+router.get("/category/Supplement", getSupplementMedicines);
 
 module.exports = router;

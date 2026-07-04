@@ -60,8 +60,30 @@ const getRespiratoryMedicines = async (req, res) => {
   }
 };
 
+
+// Get Supplement Medicines
+const getSupplementMedicines = async (req, res) => {
+  try {
+    const medicines = await Inventory.find({
+      category: "Supplement",
+    });
+
+    res.status(200).json({
+      success: true,
+      totalMedicines: medicines.length,
+      data: medicines,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
     getAllInventory,
     getAnalgesicMedicines,
     getRespiratoryMedicines,
+    getSupplementMedicines,
 };
