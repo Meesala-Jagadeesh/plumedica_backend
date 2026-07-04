@@ -101,10 +101,51 @@ const getGIHealthMedicines = async (req, res) => {
   }
 };
 
+
+// Add In-stock
+const addInStock = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { quantity, date } = req.body;
+
+    const medicine = await Inventory.findById(id);
+
+    if (!medicine) {
+      return res.status(404).json({
+        success: false,
+        message: "Medicine not found",
+      });
+    }
+
+    medicine.remainingStock += Number(quantity);
+
+    medicine.stockTimeline.unshift({
+      type: "In-stock",
+      quantity,
+      date,
+    });
+
+    await medicine.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Stock added successfully",
+      data: medicine,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
     getAllInventory,
     getAnalgesicMedicines,
     getRespiratoryMedicines,
     getSupplementMedicines,
     getGIHealthMedicines,
+    addInStock,
 };
