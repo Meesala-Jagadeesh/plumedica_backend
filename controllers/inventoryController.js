@@ -361,6 +361,29 @@ const getAverageStock = async (req, res) => {
     });
   }
 };
+
+// Get Low Stock Medicines
+const getLowStockMedicines = async (req, res) => {
+  try {
+    const medicines = await Inventory.find();
+
+    const lowStockMedicines = medicines.filter(
+      (medicine) => medicine.remainingStock <= medicine.meanLimit
+    );
+
+    res.status(200).json({
+      success: true,
+      totalMedicines: lowStockMedicines.length,
+      data: lowStockMedicines,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 module.exports = {
     getAllInventory,
     getAnalgesicMedicines,
@@ -376,4 +399,5 @@ module.exports = {
     getTotalStock,
     getMedicinePrices,
     getAverageStock,
+    getLowStockMedicines,
 };

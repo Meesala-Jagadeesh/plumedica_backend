@@ -17,6 +17,7 @@ const {
     getTotalStock,
     getMedicinePrices,
     getAverageStock,
+    getLowStockMedicines,
 } = require("../controllers/inventoryController");
 
 // Get All Medicines
@@ -40,5 +41,6 @@ router.get("/expires", getExpiryMedicines);
 router.get("/total-stock", getTotalStock);
 router.get("/price", getMedicinePrices);
 router.get("/average-stock", getAverageStock);
+router.get("/low-stock", getLowStockMedicines);
 
 module.exports = router;
