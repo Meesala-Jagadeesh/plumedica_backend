@@ -141,6 +141,35 @@ const addInStock = async (req, res) => {
   }
 };
 
+
+// Get Mean Limit Medicines
+const getMeanLimitMedicines = async (req, res) => {
+  try {
+    const medicines = await Inventory.find(
+      {},
+      {
+        medicineName: 1,
+        remainingStock: 1,
+        meanLimit: 1,
+        maxLimit: 1,
+        totalStock: 1,
+      }
+    );
+
+    res.status(200).json({
+      success: true,
+      totalMedicines: medicines.length,
+      data: medicines,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
     getAllInventory,
     getAnalgesicMedicines,
@@ -148,4 +177,5 @@ module.exports = {
     getSupplementMedicines,
     getGIHealthMedicines,
     addInStock,
+    getMeanLimitMedicines,
 };
