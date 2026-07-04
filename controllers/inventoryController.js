@@ -334,6 +334,33 @@ const getMedicinePrices = async (req, res) => {
     });
   }
 };
+
+// Get Average Stock
+const getAverageStock = async (req, res) => {
+  try {
+    const medicines = await Inventory.find();
+
+    const averageStockData = medicines.map((medicine) => ({
+      medicineName: medicine.medicineName,
+      remainingStock: medicine.remainingStock,
+      totalStock: medicine.totalStock,
+      averageStock:
+        (medicine.remainingStock + medicine.totalStock) / 2,
+    }));
+
+    res.status(200).json({
+      success: true,
+      totalMedicines: averageStockData.length,
+      data: averageStockData,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 module.exports = {
     getAllInventory,
     getAnalgesicMedicines,
@@ -348,4 +375,5 @@ module.exports = {
     getExpiryMedicines,
     getTotalStock,
     getMedicinePrices,
+    getAverageStock,
 };
