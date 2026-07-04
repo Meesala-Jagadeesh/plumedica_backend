@@ -12,6 +12,7 @@ const {
     getMeanLimitMedicines,
     getMaxLimitMedicines,
     getRemainingStock,
+    getSoldStock,
 } = require("../controllers/inventoryController");
 
 // Get All Medicines
@@ -28,9 +29,8 @@ router.get("/gi-health", getGIHealthMedicines);
 router.put("/add-stock/:id", addInStock);
 
 router.get("/mean-limit", getMeanLimitMedicines);
-
 router.get("/max-limit", getMaxLimitMedicines);
-
 router.get("/remaining", getRemainingStock);
+router.get("/sold", getSoldStock);
 
 module.exports = router;
