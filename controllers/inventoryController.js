@@ -384,6 +384,30 @@ const getLowStockMedicines = async (req, res) => {
     });
   }
 };
+
+
+// Get Full Stock Medicines
+const getFullStockMedicines = async (req, res) => {
+  try {
+    const medicines = await Inventory.find();
+
+    const fullStockMedicines = medicines.filter(
+      (medicine) => medicine.remainingStock > medicine.meanLimit
+    );
+
+    res.status(200).json({
+      success: true,
+      totalMedicines: fullStockMedicines.length,
+      data: fullStockMedicines,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 module.exports = {
     getAllInventory,
     getAnalgesicMedicines,
@@ -400,4 +424,5 @@ module.exports = {
     getMedicinePrices,
     getAverageStock,
     getLowStockMedicines,
+    getFullStockMedicines,
 };
