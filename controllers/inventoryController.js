@@ -309,6 +309,31 @@ const getTotalStock = async (req, res) => {
     });
   }
 };
+
+// Get Medicine Prices
+const getMedicinePrices = async (req, res) => {
+  try {
+    const medicines = await Inventory.find(
+      {},
+      {
+        medicineName: 1,
+        price: 1,
+      }
+    );
+
+    res.status(200).json({
+      success: true,
+      totalMedicines: medicines.length,
+      data: medicines,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 module.exports = {
     getAllInventory,
     getAnalgesicMedicines,
@@ -322,4 +347,5 @@ module.exports = {
     getSoldStock,
     getExpiryMedicines,
     getTotalStock,
+    getMedicinePrices,
 };
