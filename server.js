@@ -5,6 +5,7 @@ const cors = require("cors");
 const orderRoutes = require("./routes/orderRoutes");
 const inventoryRoutes = require("./routes/inventoryRoutes");
 const customerRoutes = require("./routes/customerRoutes");
+const salesRoutes = require("./routes/salesRoutes");
 
 dotenv.config();
 
@@ -25,6 +26,8 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/inventory", inventoryRoutes);
 // Customer Routes
 app.use("/api/customers", customerRoutes);
+
+app.use("/api/sales", salesRoutes);
 
 const PORT = process.env.PORT || 5000;
 
