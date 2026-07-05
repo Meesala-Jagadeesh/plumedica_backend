@@ -862,6 +862,37 @@ const getRemainingStock = async (req, res) => {
     });
   }
 };
+
+// ==============================
+// Get Refilled Stock Activity
+// ==============================
+
+const getRefilledStock = async (req, res) => {
+  try {
+    const sales = await Sales.find({
+      stockRefilled: { $gt: 0 },
+    });
+
+    const totalRefilledStock = sales.reduce(
+      (sum, sale) => sum + sale.stockRefilled,
+      0
+    );
+
+    res.status(200).json({
+      success: true,
+      totalRecords: sales.length,
+      totalRefilledStock,
+      data: sales,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch refilled stock",
+      error: error.message,
+    });
+  }
+};
 module.exports = {
   getTotalRevenue,
   getTransactions,
@@ -886,4 +917,5 @@ module.exports = {
   getPaymentMethodsByDate,
   getSoldStock,
   getRemainingStock,
+  getRefilledStock,
 };
