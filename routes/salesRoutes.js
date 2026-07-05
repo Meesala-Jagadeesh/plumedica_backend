@@ -20,6 +20,7 @@ const {
   getGIHealthSales,
   getOtherSales,
   getCreditCardSales,
+  getDebitCardSales,
 } = require("../controllers/salesController");
 
 // Total Revenue
@@ -56,5 +57,7 @@ router.get("/gi-health", getGIHealthSales);
 router.get("/others", getOtherSales);
 // Credit Card Sales
 router.get("/credit-card", getCreditCardSales);
+// Debit Card Sales
+router.get("/debit-card", getDebitCardSales);
 
 module.exports = router;

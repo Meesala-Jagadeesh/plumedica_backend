@@ -655,6 +655,38 @@ const getCreditCardSales = async (req, res) => {
     });
   }
 };
+
+// ==============================
+// Get Debit Card Sales
+// ==============================
+
+const getDebitCardSales = async (req, res) => {
+  try {
+    const sales = await Sales.find({
+      paymentMethod: "Debit Card",
+    });
+
+    const totalRevenue = sales.reduce(
+      (sum, sale) => sum + sale.amount,
+      0
+    );
+
+    res.status(200).json({
+      success: true,
+      paymentMethod: "Debit Card",
+      totalTransactions: sales.length,
+      totalRevenue,
+      data: sales,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch Debit Card sales",
+      error: error.message,
+    });
+  }
+};
 module.exports = {
   getTotalRevenue,
   getTransactions,
@@ -673,4 +705,5 @@ module.exports = {
   getGIHealthSales,
   getOtherSales,
   getCreditCardSales,
+  getDebitCardSales,
 };
