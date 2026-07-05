@@ -751,6 +751,55 @@ const getCashSales = async (req, res) => {
     });
   }
 };
+
+// ==============================
+// Get Payment Methods By Date
+// ==============================
+
+const getPaymentMethodsByDate = async (req, res) => {
+  try {
+    const { date } = req.query;
+
+    if (!date) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide a date",
+      });
+    }
+
+    const start = new Date(date);
+    const end = new Date(date);
+
+    end.setDate(end.getDate() + 1);
+
+    const sales = await Sales.find({
+      transactionDate: {
+        $gte: start,
+        $lt: end,
+      },
+    });
+
+    const totalRevenue = sales.reduce(
+      (sum, sale) => sum + sale.amount,
+      0
+    );
+
+    res.status(200).json({
+      success: true,
+      selectedDate: date,
+      totalTransactions: sales.length,
+      totalRevenue,
+      data: sales,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch payment methods by date",
+      error: error.message,
+    });
+  }
+};
 module.exports = {
   getTotalRevenue,
   getTransactions,
@@ -772,4 +821,5 @@ module.exports = {
   getDebitCardSales,
   getUPISales,
   getCashSales,
+  getPaymentMethodsByDate,
 };
