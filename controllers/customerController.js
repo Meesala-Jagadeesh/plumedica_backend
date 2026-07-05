@@ -41,7 +41,29 @@ const getPlumedicaCustomers = async (req, res) => {
   }
 };
 
+
+// Get Non-Plumedica Customers
+const getNonPlumedicaCustomers = async (req, res) => {
+  try {
+    const customers = await Customer.find({
+      customerType: "Non-Plumedica",
+    });
+
+    res.status(200).json({
+      success: true,
+      totalCustomers: customers.length,
+      data: customers,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 module.exports = {
   getAllCustomers,
   getPlumedicaCustomers,
+  getNonPlumedicaCustomers,
 };
