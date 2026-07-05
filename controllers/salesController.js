@@ -831,6 +831,37 @@ const getSoldStock = async (req, res) => {
     });
   }
 };
+
+// ==============================
+// Get Remaining Stock Activity
+// ==============================
+
+const getRemainingStock = async (req, res) => {
+  try {
+    const sales = await Sales.find({
+      stockRemaining: { $gt: 0 },
+    });
+
+    const totalRemainingStock = sales.reduce(
+      (sum, sale) => sum + sale.stockRemaining,
+      0
+    );
+
+    res.status(200).json({
+      success: true,
+      totalRecords: sales.length,
+      totalRemainingStock,
+      data: sales,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch remaining stock",
+      error: error.message,
+    });
+  }
+};
 module.exports = {
   getTotalRevenue,
   getTransactions,
@@ -854,4 +885,5 @@ module.exports = {
   getCashSales,
   getPaymentMethodsByDate,
   getSoldStock,
+  getRemainingStock,
 };
