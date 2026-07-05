@@ -719,6 +719,38 @@ const getUPISales = async (req, res) => {
     });
   }
 };
+
+// ==============================
+// Get Cash Sales
+// ==============================
+
+const getCashSales = async (req, res) => {
+  try {
+    const sales = await Sales.find({
+      paymentMethod: "Cash",
+    });
+
+    const totalRevenue = sales.reduce(
+      (sum, sale) => sum + sale.amount,
+      0
+    );
+
+    res.status(200).json({
+      success: true,
+      paymentMethod: "Cash",
+      totalTransactions: sales.length,
+      totalRevenue,
+      data: sales,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch Cash sales",
+      error: error.message,
+    });
+  }
+};
 module.exports = {
   getTotalRevenue,
   getTransactions,
@@ -739,4 +771,5 @@ module.exports = {
   getCreditCardSales,
   getDebitCardSales,
   getUPISales,
+  getCashSales,
 };
