@@ -24,6 +24,7 @@ const {
   getUPISales,
   getCashSales,
   getPaymentMethodsByDate,
+  getSoldStock,
 } = require("../controllers/salesController");
 
 // Total Revenue
@@ -68,5 +69,7 @@ router.get("/upi", getUPISales);
 router.get("/cash", getCashSales);
 // Payment Methods - Select Date
 router.get("/payment-methods/select-date", getPaymentMethodsByDate);
+// Stock Activity - Sold
+router.get("/stock-activity/sold", getSoldStock);
 
 module.exports = router;

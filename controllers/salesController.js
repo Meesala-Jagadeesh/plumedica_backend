@@ -800,6 +800,37 @@ const getPaymentMethodsByDate = async (req, res) => {
     });
   }
 };
+
+// ==============================
+// Get Sold Stock Activity
+// ==============================
+
+const getSoldStock = async (req, res) => {
+  try {
+    const sales = await Sales.find({
+      stockSold: { $gt: 0 },
+    });
+
+    const totalStockSold = sales.reduce(
+      (sum, sale) => sum + sale.stockSold,
+      0
+    );
+
+    res.status(200).json({
+      success: true,
+      totalTransactions: sales.length,
+      totalStockSold,
+      data: sales,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch sold stock activity",
+      error: error.message,
+    });
+  }
+};
 module.exports = {
   getTotalRevenue,
   getTransactions,
@@ -822,4 +853,5 @@ module.exports = {
   getUPISales,
   getCashSales,
   getPaymentMethodsByDate,
+  getSoldStock,
 };
