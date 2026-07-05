@@ -8,6 +8,7 @@ const {
   getAverageOrder,
   getDailySales,
   getWeeklySales,
+  getMonthlySales,
 } = require("../controllers/salesController");
 
 // Total Revenue
@@ -20,5 +21,7 @@ router.get("/average-order", getAverageOrder);
 router.get("/daily", getDailySales);
 // Weekly Sales
 router.get("/weekly", getWeeklySales);
+// Monthly Sales
+router.get("/monthly", getMonthlySales);
 
 module.exports = router;

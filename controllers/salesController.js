@@ -184,10 +184,62 @@ const getWeeklySales = async (req, res) => {
     });
   }
 };
+
+// ==============================
+// Get Monthly Sales
+// ==============================
+
+const getMonthlySales = async (req, res) => {
+  try {
+    const today = new Date();
+
+    // Start of current month
+    const startOfMonth = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      1
+    );
+
+    // Start of next month
+    const endOfMonth = new Date(
+      today.getFullYear(),
+      today.getMonth() + 1,
+      1
+    );
+
+    const sales = await Sales.find({
+      transactionDate: {
+        $gte: startOfMonth,
+        $lt: endOfMonth,
+      },
+    });
+
+    const totalRevenue = sales.reduce(
+      (sum, sale) => sum + sale.amount,
+      0
+    );
+
+    res.status(200).json({
+      success: true,
+      month: today.toLocaleString("default", { month: "long" }),
+      year: today.getFullYear(),
+      totalTransactions: sales.length,
+      totalRevenue,
+      data: sales,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 module.exports = {
   getTotalRevenue,
   getTransactions,
   getAverageOrder,
   getDailySales,
   getWeeklySales,
+  getMonthlySales,
 };
