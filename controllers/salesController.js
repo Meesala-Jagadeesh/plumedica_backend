@@ -33,6 +33,28 @@ const getTotalRevenue = async (req, res) => {
   }
 };
 
+
+// ==============================
+// Get Total Transactions
+// ==============================
+
+const getTransactions = async (req, res) => {
+  try {
+    const totalTransactions = await Sales.countDocuments();
+
+    res.status(200).json({
+      success: true,
+      transactions: totalTransactions,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch transactions",
+      error: error.message,
+    });
+  }
+};
 module.exports = {
   getTotalRevenue,
+  getTransactions,
 };
