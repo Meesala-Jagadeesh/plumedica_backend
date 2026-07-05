@@ -6,6 +6,7 @@ const {
   getTotalRevenue,
   getTransactions,
   getAverageOrder,
+  getDailySales,
 } = require("../controllers/salesController");
 
 // Total Revenue
@@ -14,4 +15,7 @@ router.get("/total-revenue", getTotalRevenue);
 router.get("/transactions", getTransactions);
 // Average Order
 router.get("/average-order", getAverageOrder);
+// Daily Sales
+router.get("/daily", getDailySales);
+
 module.exports = router;

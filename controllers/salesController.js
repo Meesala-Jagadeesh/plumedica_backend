@@ -90,8 +90,59 @@ const getAverageOrder = async (req, res) => {
     });
   }
 };
+
+// ==============================
+// Get Daily Sales
+// ==============================
+
+const getDailySales = async (req, res) => {
+  try {
+    const today = new Date();
+
+    // Start of today (00:00:00)
+    const startOfDay = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate()
+    );
+
+    // End of today (23:59:59)
+    const endOfDay = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate() + 1
+    );
+
+    const sales = await Sales.find({
+      transactionDate: {
+        $gte: startOfDay,
+        $lt: endOfDay,
+      },
+    });
+
+    const totalRevenue = sales.reduce(
+      (sum, sale) => sum + sale.amount,
+      0
+    );
+
+    res.status(200).json({
+      success: true,
+      date: startOfDay.toISOString().split("T")[0],
+      totalTransactions: sales.length,
+      totalRevenue,
+      data: sales,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 module.exports = {
   getTotalRevenue,
   getTransactions,
   getAverageOrder,
+  getDailySales,
 };
