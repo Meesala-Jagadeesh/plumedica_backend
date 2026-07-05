@@ -552,6 +552,38 @@ const getSupplementsSales = async (req, res) => {
     });
   }
 };
+
+// ==============================
+// Get GI Health Sales
+// ==============================
+
+const getGIHealthSales = async (req, res) => {
+  try {
+    const sales = await Sales.find({
+      category: "GI Health",
+    });
+
+    const totalRevenue = sales.reduce(
+      (sum, sale) => sum + sale.amount,
+      0
+    );
+
+    res.status(200).json({
+      success: true,
+      category: "GI Health",
+      totalTransactions: sales.length,
+      totalRevenue,
+      data: sales,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch GI Health sales",
+      error: error.message,
+    });
+  }
+};
 module.exports = {
   getTotalRevenue,
   getTransactions,
@@ -567,4 +599,5 @@ module.exports = {
   getAnalgesicsSales,
   getRespiratorySales,
   getSupplementsSales,
+  getGIHealthSales,
 };

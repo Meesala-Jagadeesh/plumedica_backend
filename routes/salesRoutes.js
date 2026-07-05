@@ -17,6 +17,7 @@ const {
   getAnalgesicsSales,
   getRespiratorySales,
   getSupplementsSales,
+  getGIHealthSales,
 } = require("../controllers/salesController");
 
 // Total Revenue
@@ -47,5 +48,7 @@ router.get("/analgesics", getAnalgesicsSales);
 router.get("/respiratory", getRespiratorySales);
 // Supplements Sales
 router.get("/supplements", getSupplementsSales);
+// GI Health Sales
+router.get("/gi-health", getGIHealthSales);
 
 module.exports = router;
