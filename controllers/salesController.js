@@ -687,6 +687,38 @@ const getDebitCardSales = async (req, res) => {
     });
   }
 };
+
+// ==============================
+// Get UPI Sales
+// ==============================
+
+const getUPISales = async (req, res) => {
+  try {
+    const sales = await Sales.find({
+      paymentMethod: "UPI",
+    });
+
+    const totalRevenue = sales.reduce(
+      (sum, sale) => sum + sale.amount,
+      0
+    );
+
+    res.status(200).json({
+      success: true,
+      paymentMethod: "UPI",
+      totalTransactions: sales.length,
+      totalRevenue,
+      data: sales,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch UPI sales",
+      error: error.message,
+    });
+  }
+};
 module.exports = {
   getTotalRevenue,
   getTransactions,
@@ -706,4 +738,5 @@ module.exports = {
   getOtherSales,
   getCreditCardSales,
   getDebitCardSales,
+  getUPISales,
 };
