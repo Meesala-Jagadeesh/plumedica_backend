@@ -15,6 +15,7 @@ const {
   getStockRefilled,
   getSalesByRange,
   getAnalgesicsSales,
+  getRespiratorySales,
 } = require("../controllers/salesController");
 
 // Total Revenue
@@ -41,5 +42,7 @@ router.get("/stock-refilled", getStockRefilled);
 router.get("/range", getSalesByRange);
 // Analgesics Sales
 router.get("/analgesics", getAnalgesicsSales);
+// Respiratory Sales
+router.get("/respiratory", getRespiratorySales);
 
 module.exports = router;

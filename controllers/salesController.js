@@ -488,6 +488,38 @@ const getAnalgesicsSales = async (req, res) => {
     });
   }
 };
+
+// ==============================
+// Get Respiratory Sales
+// ==============================
+
+const getRespiratorySales = async (req, res) => {
+  try {
+    const sales = await Sales.find({
+      category: "Respiratory",
+    });
+
+    const totalRevenue = sales.reduce(
+      (sum, sale) => sum + sale.amount,
+      0
+    );
+
+    res.status(200).json({
+      success: true,
+      category: "Respiratory",
+      totalTransactions: sales.length,
+      totalRevenue,
+      data: sales,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch Respiratory sales",
+      error: error.message,
+    });
+  }
+};
 module.exports = {
   getTotalRevenue,
   getTransactions,
@@ -501,4 +533,5 @@ module.exports = {
   getStockRefilled,
   getSalesByRange,
   getAnalgesicsSales,
+  getRespiratorySales,
 };
