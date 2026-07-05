@@ -277,6 +277,54 @@ const getYearlySales = async (req, res) => {
     });
   }
 };
+
+// ==============================
+// Get Sales By Selected Date
+// ==============================
+
+const getSalesByDate = async (req, res) => {
+  try {
+    const { date } = req.query;
+
+    if (!date) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide a date (YYYY-MM-DD)",
+      });
+    }
+
+    const startDate = new Date(date);
+    const endDate = new Date(date);
+
+    endDate.setDate(endDate.getDate() + 1);
+
+    const sales = await Sales.find({
+      transactionDate: {
+        $gte: startDate,
+        $lt: endDate,
+      },
+    });
+
+    const totalRevenue = sales.reduce(
+      (sum, sale) => sum + sale.amount,
+      0
+    );
+
+    res.status(200).json({
+      success: true,
+      selectedDate: date,
+      totalTransactions: sales.length,
+      totalRevenue,
+      data: sales,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 module.exports = {
   getTotalRevenue,
   getTransactions,
@@ -285,4 +333,5 @@ module.exports = {
   getWeeklySales,
   getMonthlySales,
   getYearlySales,
+  getSalesByDate,
 };

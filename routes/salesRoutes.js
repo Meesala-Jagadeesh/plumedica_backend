@@ -10,6 +10,7 @@ const {
   getWeeklySales,
   getMonthlySales,
   getYearlySales,
+  getSalesByDate,
 } = require("../controllers/salesController");
 
 // Total Revenue
@@ -26,5 +27,7 @@ router.get("/weekly", getWeeklySales);
 router.get("/monthly", getMonthlySales);
 // Yearly Sales
 router.get("/yearly", getYearlySales);
+// Sales By Selected Date
+router.get("/select-date", getSalesByDate);
 
 module.exports = router;
