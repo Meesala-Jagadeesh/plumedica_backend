@@ -27,6 +27,7 @@ const {
   getSoldStock,
   getRemainingStock,
   getRefilledStock,
+  getDailySalesTrend,
 } = require("../controllers/salesController");
 
 // Total Revenue
@@ -77,5 +78,7 @@ router.get("/stock-activity/sold", getSoldStock);
 router.get("/stock-activity/remaining", getRemainingStock);
 // Stock Activity - Refilled
 router.get("/stock-activity/refilled", getRefilledStock);
+// Daily Sales Trend
+router.get("/daily-sales-trend", getDailySalesTrend);
 
 module.exports = router;

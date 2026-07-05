@@ -893,6 +893,53 @@ const getRefilledStock = async (req, res) => {
     });
   }
 };
+
+// ==============================
+// Get Daily Sales Trend
+// ==============================
+
+const getDailySalesTrend = async (req, res) => {
+  try {
+    const trend = await Sales.aggregate([
+      {
+        $group: {
+          _id: {
+            $dateToString: {
+              format: "%Y-%m-%d",
+              date: "$transactionDate",
+            },
+          },
+          totalRevenue: {
+            $sum: "$amount",
+          },
+          totalTransactions: {
+            $sum: 1,
+          },
+        },
+      },
+      {
+        $sort: {
+          _id: 1,
+        },
+      },
+    ]);
+
+    res.status(200).json({
+      success: true,
+      totalDays: trend.length,
+      data: trend,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch daily sales trend",
+      error: error.message,
+    });
+  }
+};
+
+
 module.exports = {
   getTotalRevenue,
   getTransactions,
@@ -918,4 +965,5 @@ module.exports = {
   getSoldStock,
   getRemainingStock,
   getRefilledStock,
+  getDailySalesTrend,
 };
