@@ -140,9 +140,54 @@ const getDailySales = async (req, res) => {
     });
   }
 };
+
+// ==============================
+// Get Weekly Sales
+// ==============================
+
+const getWeeklySales = async (req, res) => {
+  try {
+    const today = new Date();
+
+    // Start of the week (Sunday)
+    const startOfWeek = new Date(today);
+    startOfWeek.setDate(today.getDate() - today.getDay());
+    startOfWeek.setHours(0, 0, 0, 0);
+
+    // End of the week (Saturday)
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 7);
+
+    const sales = await Sales.find({
+      transactionDate: {
+        $gte: startOfWeek,
+        $lt: endOfWeek,
+      },
+    });
+
+    const totalRevenue = sales.reduce(
+      (sum, sale) => sum + sale.amount,
+      0
+    );
+
+    res.status(200).json({
+      success: true,
+      totalTransactions: sales.length,
+      totalRevenue,
+      data: sales,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 module.exports = {
   getTotalRevenue,
   getTransactions,
   getAverageOrder,
   getDailySales,
+  getWeeklySales,
 };
