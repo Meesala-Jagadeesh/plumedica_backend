@@ -6,6 +6,7 @@ const {
   getAllCustomers,
   getPlumedicaCustomers,
   getNonPlumedicaCustomers,
+  searchCustomers,
 } = require("../controllers/customerController");
 
 // GET All Customers
@@ -14,5 +15,7 @@ router.get("/all", getAllCustomers);
 router.get("/plumedica", getPlumedicaCustomers);
 // GET Non-Plumedica Customers
 router.get("/non-plumedica", getNonPlumedicaCustomers);
+// Search Customers
+router.get("/search", searchCustomers);
 
 module.exports = router;
