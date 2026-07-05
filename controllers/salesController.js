@@ -375,6 +375,37 @@ const getInventoryMovement = async (req, res) => {
     });
   }
 };
+
+// ==============================
+// Get Stock Refilled
+// ==============================
+
+const getStockRefilled = async (req, res) => {
+  try {
+    const sales = await Sales.find({
+      stockRefilled: { $gt: 0 },
+    });
+
+    const totalRefilled = sales.reduce(
+      (sum, sale) => sum + sale.stockRefilled,
+      0
+    );
+
+    res.status(200).json({
+      success: true,
+      totalRefilled,
+      totalTransactions: sales.length,
+      data: sales,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch stock refilled data",
+      error: error.message,
+    });
+  }
+};
 module.exports = {
   getTotalRevenue,
   getTransactions,
@@ -385,4 +416,5 @@ module.exports = {
   getYearlySales,
   getSalesByDate,
   getInventoryMovement,
+  getStockRefilled,
 };
