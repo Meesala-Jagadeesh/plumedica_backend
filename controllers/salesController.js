@@ -406,6 +406,56 @@ const getStockRefilled = async (req, res) => {
     });
   }
 };
+
+// ==============================
+// Get Sales By Date Range
+// ==============================
+
+const getSalesByRange = async (req, res) => {
+  try {
+    const { startDate, endDate } = req.query;
+
+    if (!startDate || !endDate) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide startDate and endDate",
+      });
+    }
+
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    // Include the complete end date
+    end.setDate(end.getDate() + 1);
+
+    const sales = await Sales.find({
+      transactionDate: {
+        $gte: start,
+        $lt: end,
+      },
+    });
+
+    const totalRevenue = sales.reduce(
+      (sum, sale) => sum + sale.amount,
+      0
+    );
+
+    res.status(200).json({
+      success: true,
+      startDate,
+      endDate,
+      totalTransactions: sales.length,
+      totalRevenue,
+      data: sales,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 module.exports = {
   getTotalRevenue,
   getTransactions,
@@ -417,4 +467,5 @@ module.exports = {
   getSalesByDate,
   getInventoryMovement,
   getStockRefilled,
+  getSalesByRange,
 };

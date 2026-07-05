@@ -13,6 +13,7 @@ const {
   getSalesByDate,
   getInventoryMovement,
   getStockRefilled,
+  getSalesByRange,
 } = require("../controllers/salesController");
 
 // Total Revenue
@@ -35,5 +36,7 @@ router.get("/select-date", getSalesByDate);
 router.get("/inventory-movement", getInventoryMovement);
 // Stock Refilled
 router.get("/stock-refilled", getStockRefilled);
+// Sales By Date Range
+router.get("/range", getSalesByRange);
 
 module.exports = router;
