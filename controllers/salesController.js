@@ -325,6 +325,56 @@ const getSalesByDate = async (req, res) => {
     });
   }
 };
+
+// ==============================
+// Get Inventory Movement
+// ==============================
+
+const getInventoryMovement = async (req, res) => {
+  try {
+    const result = await Sales.aggregate([
+      {
+        $group: {
+          _id: null,
+          totalSold: {
+            $sum: "$stockSold",
+          },
+          totalRefilled: {
+            $sum: "$stockRefilled",
+          },
+          totalRemaining: {
+            $sum: "$stockRemaining",
+          },
+        },
+      },
+    ]);
+
+    const inventory =
+      result.length > 0
+        ? result[0]
+        : {
+            totalSold: 0,
+            totalRefilled: 0,
+            totalRemaining: 0,
+          };
+
+    res.status(200).json({
+      success: true,
+      data: {
+        totalSold: inventory.totalSold,
+        totalRefilled: inventory.totalRefilled,
+        totalRemaining: inventory.totalRemaining,
+      },
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch inventory movement",
+      error: error.message,
+    });
+  }
+};
 module.exports = {
   getTotalRevenue,
   getTransactions,
@@ -334,4 +384,5 @@ module.exports = {
   getMonthlySales,
   getYearlySales,
   getSalesByDate,
+  getInventoryMovement,
 };
